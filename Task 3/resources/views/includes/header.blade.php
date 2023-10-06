@@ -1,3 +1,7 @@
+@php
+    $active_route = request()->route()->getName();
+@endphp
+
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -25,9 +29,10 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <div class="p-2 pt-3 text-center brand-wrapper">
-        <a href="#" class="brand-img-container"><img src="{{asset('assets/dist/img/img.png')}}" alt="AdminLTE Logo" class="img-fluid">
-    </a>
-</div>
+        <a href="#" class="brand-img-container"><img src="{{ asset('assets/dist/img/img.png') }}"
+                alt="AdminLTE Logo" class="img-fluid">
+        </a>
+    </div>
 
     <!-- Sidebar -->
     <div class="sidebar esSidebar">
@@ -35,23 +40,38 @@
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="{{asset('assets/dist/img/user.png')}}" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <a href="#" class="d-block">{{auth()->user()->name}}</a>
+                </div>
+            </div>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">
+                    <a href="{{ route('dashboard') }}" class="nav-link {{$active_route == 'dashboard' ? "active" : ""}}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
-{{--                @if(auth()->user()->hasPermission('list_express_service'))--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a href="{{route('admin.express_service.index')}}" class="nav-link {{ route('admin.express_service.index') == url()->current() ? 'active': ''}}">--}}
-{{--                        <i class="nav-icon fas fa-biking"></i>--}}
-{{--                        <p>Express Service</p>--}}
-{{--                    </a>--}}
-{{--                </li>--}}
-{{--                @endif--}}
+                <li class="nav-item">
+                    <a href="{{ route('post.index') }}" class="nav-link {{$active_route == 'post.index' ? "active" : ""}}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Post</p>
+                    </a>
+                </li>
+                {{--                @if (auth()->user()->hasPermission('list_express_service')) --}}
+                {{--                <li class="nav-item"> --}}
+                {{--                    <a href="{{route('admin.express_service.index')}}" class="nav-link {{ route('admin.express_service.index') == url()->current() ? 'active': ''}}"> --}}
+                {{--                        <i class="nav-icon fas fa-biking"></i> --}}
+                {{--                        <p>Express Service</p> --}}
+                {{--                    </a> --}}
+                {{--                </li> --}}
+                {{--                @endif --}}
                 <li class="nav-item">
                     <form action="#" method="post">
                         @csrf
