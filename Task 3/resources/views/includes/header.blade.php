@@ -73,13 +73,10 @@
                 {{--                </li> --}}
                 {{--                @endif --}}
                 <li class="nav-item">
-                    <form action="#" method="post">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-logout nav-link">
+                        <a href="{{ route('logout') }}" class="btn btn-sm btn-logout nav-link">
                             <i class="nav-icon fas fa-sign-out-alt"></i>
-                            <p>Logout</p>
-                        </button>
-                    </form>
+                            Logout
+                        </a>
 
                 </li>
 

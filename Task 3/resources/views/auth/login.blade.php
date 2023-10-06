@@ -23,6 +23,11 @@
 </head>
 
 <body class="hold-transition login-page">
+
+    <div class="pt-5" style="position: absolute; top: 0; right: 0;">
+        @include('includes.message')
+    </div>
+
     <div class="login-box">
         <!-- /.login-logo -->
         <div class="card card-outline card-dark rounded-0">
@@ -31,7 +36,6 @@
             </div>
             <div class="card-body">
                 <p class="login-box-msg h6">Sign in to start your session</p>
-                @include('includes.message')
 
                 <form action="{{ route('postlogin') }}" method="post">
                     @csrf

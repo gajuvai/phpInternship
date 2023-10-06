@@ -14,16 +14,20 @@
 @section('content')
 
     <div class="card card-default color-palette-box">
-        <div class="card-header">
-            <h3 class="card-title">
-                Create a Post
-            </h3>
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Create Post</h1>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="card-body">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="col-6 pt-4">
 
-                    <form method="post" action="{{ route('post.store') }}">
+                    <form method="post" action="{{ route('post.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
@@ -49,8 +53,8 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="author" class="form-label">Author</label>
-                            <input type="text" class="form-control" id="author" name="author">
+                            <label for="image" class="form-label">Upload Image</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*" />
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button>
                         <a href="{{ route('post.index') }}" class="btn btn-primary">Cancel</a>
@@ -63,7 +67,7 @@
 @endsection
 
 @section('scripts')
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script>
         $(document).ready(function() {
             // Initialize the datepicker

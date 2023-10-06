@@ -17,3 +17,12 @@
         </div>
     @endforeach
 @endif
+<script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+<script>
+    // Automatically close the success alert after 5 seconds
+    $(document).ready(function() {
+        setTimeout(function() {
+            $('.alert').alert('close');
+        }, 5000);
+    });
+</script>

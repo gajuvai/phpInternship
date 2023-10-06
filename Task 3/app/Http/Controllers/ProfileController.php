@@ -10,4 +10,9 @@ class ProfileController extends Controller
     public function dashboard(){
         return view('dashboard');
     }
+
+    public function logout(){
+        auth()->logout();
+        return redirect()->route('getlogin')->with('success', 'You have been successfully loged out');
+    }
 }

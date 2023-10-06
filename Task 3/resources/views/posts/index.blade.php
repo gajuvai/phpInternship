@@ -19,11 +19,8 @@
                     <div class="col-sm-6">
                         <h1>Post List</h1>
                     </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Post</li>
-                        </ol>
+                    <div class="card-tools ml-auto">
+                        <a href="{{ route('post.create') }}" class="btn btn-success">Add New Post</a>
                     </div>
                 </div>
             </div>
@@ -40,15 +37,13 @@
 
                     <div>
                         <table class="table" id="myTable">
-                            <div class="float-right pl-4">
-                                <a href="{{ route('post.create') }}" class="btn btn-success">Add New Post</a>
-                            </div>
                             <thead>
                                 <tr>
                                     <th>Title</th>
                                     <th>Content</th>
                                     <th>Author</th>
                                     <th>Published At</th>
+                                    <th>Image</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -59,6 +54,14 @@
                                         <td>{{ $post->content }}</td>
                                         <td>{{ $post->author }}</td>
                                         <td>{{ $post->published_at }}</td>
+                                        <td>
+                                            @if($post->image)
+                                              <img height="70" width="70" src="{{asset('uploads/posts/'.$post->image)}}" alt="image" />
+                                            @else
+                                               N/A
+                                            @endif
+
+                                        </td>
                                         <td>
                                             <a href="{{ route('post.edit', $post->id) }}" class="btn btn-primary">Edit</a>
                                             <a href="{{ route('post.delete', $post->id) }}"
