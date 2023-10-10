@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\postHasImages;
 
 class Post extends Model
 {
@@ -16,5 +17,10 @@ class Post extends Model
         'author',
         'image'
     ];
+
+    public function postHasImages()
+    {
+        return $this->hasMany(PostHasImage::class, 'post_id');
+    }
 }
 

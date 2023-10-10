@@ -20,6 +20,8 @@ use App\Http\Controllers\{AuthController,ProfileController,PostController};
 Route::get('/', [AuthController::class, 'getlogin']);
 Route::get('/login', [AuthController::class, 'getlogin'])->name('getlogin');
 Route::post('/login', [AuthController::class, 'postlogin'])->name('postlogin');
+Route::get('/register', [AuthController::class, 'getregister'])->name('getregister');
+Route::post('/register', [AuthController::class, 'postregister'])->name('postregister');
 
 Route::group(['middleware'=>['login_auth']], function(){
     Route::get('/dashboard', [ProfileController::class, 'dashboard'])->name('dashboard');

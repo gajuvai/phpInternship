@@ -3,6 +3,8 @@
 @section('title', __('Post Management'))
 
 @section('css')
+    <!-- Add DataTables CSS here -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
     <style>
         .close {
             font-size: 1rem;
@@ -43,7 +45,7 @@
                                     <th>Content</th>
                                     <th>Author</th>
                                     <th>Published At</th>
-                                    <th>Image</th>
+                                    <th class="dataTable-nosort">Image</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -55,17 +57,17 @@
                                         <td>{{ $post->author }}</td>
                                         <td>{{ $post->published_at }}</td>
                                         <td>
-                                            @if($post->image)
-                                              <img height="70" width="70" src="{{asset('uploads/posts/'.$post->image)}}" alt="image" />
-                                            @else
-                                               N/A
-                                            @endif
-
+                                            @foreach ($post->postHasImages as $image)
+                                                @if($image->image)
+                                                    <img height="70" width="70" src="{{ asset('uploads/posts/'.$image->image) }}" alt="image" />
+                                                @else
+                                                    N/A
+                                                @endif
+                                            @endforeach
                                         </td>
                                         <td>
                                             <a href="{{ route('post.edit', $post->id) }}" class="btn btn-primary">Edit</a>
-                                            <a href="{{ route('post.delete', $post->id) }}"
-                                                class="btn btn-danger">Delete</a>
+                                            <a href="{{ route('post.delete', $post->id) }}" class="btn btn-danger">Delete</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -74,23 +76,25 @@
                     </div>
                 </div>
             </div>
-
-            <!-- /.row -->
         </div>
         <!-- /.card-body -->
     </div>
 @endsection
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#myTable').DataTable();
-    });
 
-    // Automatically close the success alert after 5 seconds
-    $(document).ready(function() {
-        setTimeout(function() {
-            $('.alert').alert('close');
-        }, 5000);
-    });
-</script>
 @section('scripts')
+    <!-- Add DataTables JavaScript here -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
+
+        // Automatically close the success alert after 5 seconds
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.alert').alert('close');
+            }, 5000);
+        });
+    </script>
+@endsection

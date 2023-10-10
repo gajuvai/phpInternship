@@ -52,9 +52,39 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="image" class="form-label">Upload Image</label>
-                            <input type="file" class="form-control" id="image" name="image" accept="image/*" />
+                        <label class="form-label">Upload Images</label>
+                        <div class="mb-3 increment">
+                            <div class="row control-group">
+                                <div class="col-md-5">
+                                    <label for="caption" class="form-label">Caption</label>
+                                    <input type="text" class="form-control" id="caption" name="caption" />
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="image" class="form-label">Image</label>
+                                    <input type="file" class="form-control" id="image" name="image[]" accept="image/*" />
+                                </div>
+                                <div class="col-md-2">
+                                    {{-- <label for="image" class="form-label"></label> --}}
+                                    <button class="btn btn-success mt-4" id="addfile" type="button">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 clone"  style="display: none">
+                            <div class="row control-group">
+                                <div class="col-md-5">
+                                    <label for="caption" class="form-label">Caption</label>
+                                    <input type="text" class="form-control" id="caption" name="image" />
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="image" class="form-label">Image</label>
+                                    <input type="file" class="form-control" id="image" name="image[]" accept="image/*" />
+                                </div>
+                                <div class="col-md-2">
+                                    {{-- <label for="image" class="form-label"></label> --}}
+                                    <button class="btn btn-danger mt-4" id="removefile" type="button">-</button>
+                                </div>
+                            </div>
+
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button>
                         <a href="{{ route('post.index') }}" class="btn btn-primary">Cancel</a>
@@ -70,11 +100,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Initialize the datepicker
-            $('#datepicker').datepicker({
-                format: 'yyyy-mm-dd', // Set the desired date format
-                autoclose: true // Automatically close the datepicker when a date is selected
-            });
+        // Initialize the datepicker
+        $('#datepicker').datepicker({
+            format: 'yyyy-mm-dd', // Set the desired date format
+            autoclose: true // Automatically close the datepicker when a date is selected
         });
+
+        $("#addfile").click(function() {
+            var html = $(".clone").html();
+            $(".increment").after(html);
+        });
+
+        $("body").on("click", "#removefile", function() {
+            $(this).parents(".control-group").remove();
+        });
+    });
     </script>
 @endsection
