@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\PostHasImage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\support\Facades\File;
 
 class PostController extends Controller
@@ -26,10 +27,10 @@ class PostController extends Controller
             'title' => 'required',
             'content' => 'required',
             'published_at' => 'required|date',
-            'caption.*' => 'required',
+            //'caption.*' => 'required',
             'image.*' => 'max:2048', // This is the maximum file size in kilobytes (2MB).
         ]);
-
+        DB::beginTransaction();
         try {
             $post = Post::create([
                 'title' => $request->title,
@@ -42,22 +43,24 @@ class PostController extends Controller
                 $captions = $request->caption;
                 $images = $request->file('image');
 
-                foreach ($images as $key => $image) {
-                    $extension = $image->getClientOriginalExtension();
-                    $filename = time() . '_' . $key . '.' . $extension;
-                    $image->move('uploads/posts/', $filename);
+                foreach ($captions as $key => $value) {
+
+                    $extension = $images[$key]->getClientOriginalExtension();
+                    $image_path = time() . '_' . $key . '.' . $extension;
+                    $images[$key]->move('uploads/posts/', $image_path);
 
                     PostHasImage::create([
-                        'caption' => $captions[$key],
-                        'image' => $filename,
+                        'caption' => $value,
+                        'image' => $image_path,
                         'post_id' => $post->id,
                     ]);
                 }
             }
-
+            DB::commit();
             $request->session()->flash('msg', 'Post is created successfully!');
             return redirect()->route('post.index');
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error('Post creation: ' . $e->getMessage(), []);
             $request->session()->flash('msg', 'Error occurred while saving!');
             return redirect()->route('post.index');
@@ -65,51 +68,80 @@ class PostController extends Controller
     }
 
 
-    public function edit(Post $post){
-
+    public function edit(Post $post)
+    {
         return view('posts.edit', compact('post'));
     }
-    public function update(Request $request, $id){
 
-        // $post->update([
-        //     'title' => $request->title,
-        //     'content' => $request->content,
-        //     'published_at' => $request->published_at,
-        //     'author' => $request->author
-        //     ]
-        // );
+    public function update(Request $request, Post $post)
+    {
         $request->validate([
-            'title'=>'required',
-            'content'=>'required',
-            'published_at'=>'required|date',
-            'image'=>'required|max:2048',
+            'title' => 'required',
+            'content' => 'required',
+            'published_at' => 'required|date',
+            //'caption.*' => 'required',
+            'image.*' => 'max:2048', // This is the maximum file size in kilobytes (2MB).
         ]);
-        $post = Post::find($id);
-        $post->title = $request->input('title');
-        $post->content = $request->input('content');
-        $post->published_at = $request->input('published_at');
-        $post->author = auth()->user()->name;
+        DB::beginTransaction();
+        try {
+            $post->update([
+                'title' => $request->title,
+                'content' => $request->content,
+                'published_at' => $request->published_at,
+                'author' => auth()->user()->name,
+            ]);
 
-        if($request->hasfile('image')){
+            // Handle image updates
+            if ($post) {
+                $captions = $request->caption;
+                $images = $request->file('image');
+                $old_images = $request->oldImage;
 
-            $destination = 'uploads/posts/'.$post->image;
-            if(File::exists($destination))
-            {
-                File::delete($destination);
+                //delete old image
+                $post->postHasImages()->delete();
+
+                foreach ($captions as $key => $value) {
+
+                    if(isset($images[$key])){
+                        if(isset($old_images[$key]) && !empty(trim($old_images[$key]))){
+
+                            $destination = 'uploads/posts/' . $old_images[$key];
+                            if (File::exists($destination)) {
+                                File::delete($destination);
+                            }
+                        }
+                        $extension = $images[$key]->getClientOriginalExtension();
+                        $image_path = time() . '_' . $key . '.' . $extension;
+                        $images[$key]->move('uploads/posts/', $image_path);
+                    }else{
+
+                        $image_path = $old_images[$key] ?? '';
+                    }
+
+                    PostHasImage::create([
+                        'caption' => $value,
+                        'image' => $image_path,
+                        'post_id' => $post->id,
+                    ]);
+                }
             }
+            DB::commit();
 
-            $file = $request->file('image');
-            $extention = $file->getClientOriginalExtension();
-            $filename = time().'.'.$extention;
-            $file->move('uploads/posts/', $filename);
+            $request->session()->flash('msg', 'Post is updated successfully!');
+            return redirect()->route('post.index');
+        } catch (Exception $e) {
 
-            $post->image = $filename;
+            DB::rollBack();
+            Log::error('Post update: ' . $e->getMessage(), []);
+            $request->session()->flash('msg', 'Error occurred while updating the post!');
+            return redirect()->route('post.index');
         }
-        $post->update();
-
-        $request->session()->flash('msg', 'Post is updated successfully!');
-        return redirect()->route('post.index');
     }
+
+
+
+
+
     public function delete(Request $request, $id)
     {
         $post = Post::find($id);

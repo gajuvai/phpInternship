@@ -57,7 +57,7 @@
                             <div class="row control-group">
                                 <div class="col-md-5">
                                     <label for="caption" class="form-label">Caption</label>
-                                    <input type="text" class="form-control" id="caption" name="caption" />
+                                    <input type="text" class="form-control" id="caption" name="caption[]" />
                                 </div>
                                 <div class="col-md-5">
                                     <label for="image" class="form-label">Image</label>
@@ -73,7 +73,7 @@
                             <div class="row control-group">
                                 <div class="col-md-5">
                                     <label for="caption" class="form-label">Caption</label>
-                                    <input type="text" class="form-control" id="caption" name="image" />
+                                    <input type="text" class="form-control" id="caption" name="caption[]" />
                                 </div>
                                 <div class="col-md-5">
                                     <label for="image" class="form-label">Image</label>
