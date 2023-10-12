@@ -55,14 +55,15 @@
                         <label class="form-label">Upload Images</label>
                         <div class="mb-3 increment">
                             <div class="row control-group">
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <label for="caption" class="form-label">Caption</label>
                                     <input type="text" class="form-control" id="caption" name="caption[]" />
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <label for="image" class="form-label">Image</label>
                                     <input type="file" class="form-control" id="image" name="image[]" accept="image/*" />
                                 </div>
+                                <div class="col-md-2"></div>
                                 <div class="col-md-2">
                                     {{-- <label for="image" class="form-label"></label> --}}
                                     <button class="btn btn-success mt-4" id="addfile" type="button">+</button>
@@ -94,14 +95,15 @@
                 var imageCaptionField = `
                        <div class="mb-3 clone">
                             <div class="row control-group">
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <label for="caption" class="form-label">Caption</label>
                                     <input type="text" class="form-control" id="caption" name="caption[]" />
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <label for="image" class="form-label">Image</label>
                                     <input type="file" class="form-control" id="image" name="image[]" accept="image/*" />
                                 </div>
+                                <div class="col-md-2"> </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-danger mt-4" id="removefile" type="button">-</button>
                                 </div>
