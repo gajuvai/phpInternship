@@ -19,17 +19,22 @@ class AuthController extends Controller
             'email'=>'required|email',
             'password'=>'required'
         ]);
+        try{
+            $validated=auth()->attempt([
+                'email' => $request->email,
+                'password' => $request->password
+            ]);
 
-        $validated=auth()->attempt([
-            'email' => $request->email,
-            'password' => $request->password
-        ]);
-
-        if($validated){
-            return redirect()->route('dashboard')->with('success', 'Login Successful');
-        }else{
-           return redirect()->back()->with('error', 'Invalid credentials');
+            if($validated){
+                return redirect()->route('dashboard')->with('success', 'Login Successful');
+            }else{
+               return redirect()->back()->with('error', 'Invalid credentials');
+            }
+        }catch(Exception $e){
+            Log::error('Post creation: ' . $e->getMessage(), []);
+            return redirect()->back()->with('error', 'Failed to database connection.[error:' . ']');
         }
+
     }
     public function getregister(){
         return view('auth.register');

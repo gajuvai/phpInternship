@@ -51,8 +51,9 @@
                             </div>
                         </div>
                         <label class="form-label">Upload Images</label>
+
+                        @if($post->postHasImages->count() > 0)
                         <div class="mb-3 increment">
-                            @if($post->postHasImages->count() > 0)
                                 @foreach ($post->postHasImages as $index => $image)
                                     <div class="row control-group">
                                         <div class="col-md-4">
@@ -76,39 +77,9 @@
                                         </div>
                                     </div>
                                 @endforeach
-                            @else
-                                <div class="row control-group">
-                                    <div class="col-md-4">
-                                        <label for="caption" class="form-label">Caption</label>
-                                        <input type="text" id="caption" class="form-control" name="caption[]" />
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="image" class="form-label">Image</label>
-                                        <input type="file" id="image" class="form-control" name="image[]" accept="image/*" />
-                                    </div>
-                                    <div class="col-md-2"></div>
-                                    <div class="col-md-2">
-                                        <button class="btn btn-success mt-4" id="addfile" type="button">+</button>
-                                    </div>
-                                </div>
-                            @endif
                         </div>
-                        <div class="mb-3 clone" style="display: none">
-                            <div class="row control-group">
-                                <div class="col-md-4">
-                                    <label for="caption" class="form-label">Caption</label>
-                                    <input type="text" id="caption" class="form-control" name="caption[]" />
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="image" class="form-label">Image</label>
-                                    <input type="file" id="image" class="form-control" name="image[]" accept="image/*" />
-                                </div>
-                                <div class="col-md-2"></div>
-                                <div class="col-md-2">
-                                    <button class="btn btn-danger mt-4" id="removefile" type="button">-</button>
-                                </div>
-                            </div>
-                        </div>
+                        @endif
+
                         <button type="submit" class="btn btn-primary">Update</button>
                         <a href="{{ route('post.index') }}" class="btn btn-primary">Cancel</a>
                     </form>
@@ -131,13 +102,30 @@
         });
 
         $("#addfile").click(function() {
-            var html = $(".clone").html();
-            $(".increment").after(html);
-        });
+                var imageCaptionField = `
+                       <div class="mb-3 clone">
+                            <div class="row control-group">
+                                <div class="col-md-5">
+                                    <label for="caption" class="form-label">Caption</label>
+                                    <input type="text" class="form-control" id="caption" name="caption[]" />
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="image" class="form-label">Image</label>
+                                    <input type="file" class="form-control" id="image" name="image[]" accept="image/*" />
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-danger mt-4" id="removefile" type="button">-</button>
+                                </div>
+                            </div>
+                        </div>
+                `;
+                $(".increment").append(imageCaptionField);
+            });
 
-        $("body").on("click", "#removefile", function() {
-            $(this).parents(".control-group").remove();
-        });
+            // Function to remove image and caption fields
+            $("body").on("click", "#removefile", function() {
+                $(this).parents(".control-group").remove();
+            });
     });
 </script>
 @endsection

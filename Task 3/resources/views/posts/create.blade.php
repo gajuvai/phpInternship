@@ -69,23 +69,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3 clone"  style="display: none">
-                            <div class="row control-group">
-                                <div class="col-md-5">
-                                    <label for="caption" class="form-label">Caption</label>
-                                    <input type="text" class="form-control" id="caption" name="caption[]" />
-                                </div>
-                                <div class="col-md-5">
-                                    <label for="image" class="form-label">Image</label>
-                                    <input type="file" class="form-control" id="image" name="image[]" accept="image/*" />
-                                </div>
-                                <div class="col-md-2">
-                                    {{-- <label for="image" class="form-label"></label> --}}
-                                    <button class="btn btn-danger mt-4" id="removefile" type="button">-</button>
-                                </div>
-                            </div>
 
-                        </div>
                         <button type="submit" class="btn btn-primary">Save</button>
                         <a href="{{ route('post.index') }}" class="btn btn-primary">Cancel</a>
                     </form>
@@ -107,13 +91,30 @@
         });
 
         $("#addfile").click(function() {
-            var html = $(".clone").html();
-            $(".increment").after(html);
-        });
+                var imageCaptionField = `
+                       <div class="mb-3 clone">
+                            <div class="row control-group">
+                                <div class="col-md-5">
+                                    <label for="caption" class="form-label">Caption</label>
+                                    <input type="text" class="form-control" id="caption" name="caption[]" />
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="image" class="form-label">Image</label>
+                                    <input type="file" class="form-control" id="image" name="image[]" accept="image/*" />
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-danger mt-4" id="removefile" type="button">-</button>
+                                </div>
+                            </div>
+                        </div>
+                `;
+                $(".increment").append(imageCaptionField);
+            });
 
-        $("body").on("click", "#removefile", function() {
-            $(this).parents(".control-group").remove();
-        });
+            // Function to remove image and caption fields
+            $("body").on("click", "#removefile", function() {
+                $(this).parents(".control-group").remove();
+            });
     });
     </script>
 @endsection

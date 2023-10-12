@@ -5,6 +5,15 @@
 @section('css')
     <!-- Add DataTables CSS here -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <script src="{{ asset('assets/plugins/jquery/jquery.js') }}"></script>
+    <script>
+        // Automatically close the success alert after 5 seconds
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.alert').alert('close');
+            }, 5000);
+        });
+    </script>
     <style>
         .close {
             font-size: 1rem;
@@ -83,18 +92,11 @@
 
 @section('scripts')
     <!-- Add DataTables JavaScript here -->
-    <script src="{{ asset('assets/plugins/jquery/jquery.js') }}"></script>
+
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable();
-        });
-
-        // Automatically close the success alert after 5 seconds
-        $(document).ready(function() {
-            setTimeout(function() {
-                $('.alert').alert('close');
-            }, 5000);
         });
     </script>
 @endsection

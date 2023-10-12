@@ -27,7 +27,7 @@ class PostController extends Controller
             'title' => 'required',
             'content' => 'required',
             'published_at' => 'required|date',
-            //'caption.*' => 'required',
+            'caption.*' => 'required',
             'image.*' => 'max:2048', // This is the maximum file size in kilobytes (2MB).
         ]);
         DB::beginTransaction();
@@ -79,7 +79,7 @@ class PostController extends Controller
             'title' => 'required',
             'content' => 'required',
             'published_at' => 'required|date',
-            //'caption.*' => 'required',
+            'caption.*' => 'required',
             'image.*' => 'max:2048', // This is the maximum file size in kilobytes (2MB).
         ]);
         DB::beginTransaction();
@@ -105,10 +105,12 @@ class PostController extends Controller
                     if(isset($images[$key])){
                         if(isset($old_images[$key]) && !empty(trim($old_images[$key]))){
 
-                            $destination = 'uploads/posts/' . $old_images[$key];
-                            if (File::exists($destination)) {
+                            $destination = public_path("\uploads\posts\\") .$old_images[$key];
+
+                            if(File::exists($destination)) {
                                 File::delete($destination);
                             }
+                            $image->delete();
                         }
                         $extension = $images[$key]->getClientOriginalExtension();
                         $image_path = time() . '_' . $key . '.' . $extension;
@@ -138,10 +140,6 @@ class PostController extends Controller
         }
     }
 
-
-
-
-
     public function delete(Request $request, $id)
     {
         $post = Post::find($id);
@@ -151,9 +149,11 @@ class PostController extends Controller
             $postImages = PostHasImage::where('post_id', $post->id)->get();
 
             foreach ($postImages as $image) {
-                $destination = 'uploads/posts/' . $image->image;
-                if (File::exists($destination)) {
-                    File::delete($destination);
+
+               $destination = public_path("\uploads\posts\\") .$image->image;
+
+               if(File::exists($destination)) {
+                  File::delete($destination);
                 }
                 $image->delete();
             }
