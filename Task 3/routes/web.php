@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{AuthController,ProfileController,PostController};
+use App\Http\Controllers\{AuthController,ProfileController,PostController,UserController};
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,5 +33,13 @@ Route::group(['middleware'=>['login_auth']], function(){
     Route::get('/post/{post}/edit', [PostController::class, 'edit'])->name('post.edit');
     Route::put('/post/{post}/update', [PostController::class, 'update'])->name('post.update');
     Route::get('/post/{post}/delete', [PostController::class, 'delete'])->name('post.delete');
+
+    Route::get('/settings/users', [UserController::class, 'index'])->name('user.index');
+    Route::get('/settings/users/create', [UserController::class, 'create'])->name('user.create');
+    Route::post('/settings/users', [UserController::class, 'store'])->name('user.store');
+    Route::get('/settings/users/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::put('/settings/users/{user}/update', [UserController::class, 'update'])->name('user.update');
+    Route::get('/settings/users/{user}/delete', [UserController::class, 'delete'])->name('user.delete');
+
 
 });

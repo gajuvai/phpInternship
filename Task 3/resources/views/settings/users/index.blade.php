@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Post Management'))
+@section('title', __('User Management'))
 
 @section('css')
     <!-- Add DataTables CSS here -->
@@ -26,12 +26,12 @@
     <div class="card card-default color-palette-box">
         <div class="content-header">
             <div class="container-fluid">
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Post List</h1>
+                        <h1>User List</h1>
                     </div>
                     <div class="card-tools ml-auto">
-                        <a href="{{ route('post.create') }}" class="btn btn-success">Add New Post</a>
+                        <a href="{{ route('user.create') }}" class="btn btn-success">Add New User</a>
                     </div>
                 </div>
             </div>
@@ -50,33 +50,34 @@
                         <table border="1" id="myTable" style="border-collapse: collapse">
                             <thead>
                                 <tr>
-                                    <th>Title</th>
-                                    <th>Content</th>
-                                    <th>Author</th>
-                                    <th>Published At</th>
-                                    <th data-orderable="false">Image</th>
+                                    <th>S.N</th>
+                                    <th>Name</th>
+                                    <th>User Name</th>
+                                    <th>Email</th>
+                                    <th>Created Date</th>
+                                    <th>Status</th>
                                     <th data-orderable="false">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($posts as $post)
+                                @foreach ($users as $key=>$user)
                                     <tr>
-                                        <td>{{ $post->title }}</td>
-                                        <td>{{ $post->content }}</td>
-                                        <td>{{ $post->author }}</td>
-                                        <td>{{ Carbon\Carbon::parse($post->published_at)->format('j F Y') }}</td>
+                                        <td>{{ $key+1}}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->username }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ Carbon\Carbon::parse($user->created_at)->diffForHumans() }}</td>
                                         <td>
-                                            @foreach ($post->postHasImages as $image)
-                                                @if($image->image)
-                                                    <img height="70" width="70" src="{{ asset('uploads/posts/'.$image->image) }}" alt="image" />
-                                                @else
-                                                    N/A
-                                                @endif
-                                            @endforeach
+                                            @if ($user->status == 1)
+                                                <span class="badge badge-success">Active</span>
+                                            @else
+                                                <span class="badge badge-danger">In-active</span>
+                                            @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('post.edit', $post->id) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
-                                            <a href="{{ route('post.delete', $post->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                            <a href="#" class="btn btn-primary"><i class="fa fa-user-tag"></i></a>
+                                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
+                                            <a href="{{ route('user.delete', $user->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

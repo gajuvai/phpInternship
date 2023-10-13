@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('post_has_images', function (Blueprint $table) {
             $table->id();
-            $table->string('cation');
+            $table->string('caption'); // Corrected column name
             $table->string('image');
             $table->bigInteger('post_id', false, true);
             $table->timestamps();

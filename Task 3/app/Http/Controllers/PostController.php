@@ -105,19 +105,26 @@ class PostController extends Controller
                     if(isset($images[$key])){
                         if(isset($old_images[$key]) && !empty(trim($old_images[$key]))){
 
+                            dd($images[$key]);
                             $destination = public_path("\uploads\posts\\") .$old_images[$key];
 
                             if(File::exists($destination)) {
                                 File::delete($destination);
                             }
-                            $image->delete();
+                            //$images->delete();
                         }
                         $extension = $images[$key]->getClientOriginalExtension();
                         $image_path = time() . '_' . $key . '.' . $extension;
                         $images[$key]->move('uploads/posts/', $image_path);
                     }else{
+                        $destination = public_path("\uploads\posts\\") .$old_images[$key];
+
+                        if(File::exists($destination)) {
+                            File::delete($destination);
+                        }
 
                         $image_path = $old_images[$key] ?? '';
+                        //$images[$key]->move('uploads/posts/', $image_path);
                     }
 
                     PostHasImage::create([

@@ -52,7 +52,6 @@
                         </div>
                         <label class="form-label">Upload Images</label>
 
-                        @if($post->postHasImages->count() > 0)
                         <div class="mb-3 increment">
                                 @foreach ($post->postHasImages as $index => $image)
                                     <div class="row control-group">
@@ -78,7 +77,6 @@
                                     </div>
                                 @endforeach
                         </div>
-                        @endif
 
                         <button type="submit" class="btn btn-primary">Update</button>
                         <a href="{{ route('post.index') }}" class="btn btn-primary">Cancel</a>
