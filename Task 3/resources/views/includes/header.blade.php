@@ -68,8 +68,22 @@
                         <p>Post</p>
                     </a>
                 </li>
-                <li class="nav-item {{ $active_route == 'user.index' ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ $active_route == 'user.index' ? 'active' : '' }}">
+
+                @if ($active_route == 'user.index' || $active_route == 'user.create' || $active_route == 'user.edit' || $active_route == 'role.index' || $active_route == 'role.create' || $active_route == 'role.edit' || $active_route == 'permission.index' || $active_route == 'permission.create' || $active_route == 'permission.edit')
+                     @php
+                        $menuOpen = 'menu-open';
+                        $active = 'active'
+                     @endphp
+
+                @else
+                     @php
+                        $menuOpen = '';
+                        $active = '';
+                     @endphp
+                @endif
+
+                <li class="nav-item {{$menuOpen}}">
+                    <a href="#" class="nav-link {{ $active }}">
                         <i class="nav-icon fa fa-cog"></i>
                         <p>
                             Settings
@@ -78,19 +92,19 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('user.index') }}" class="nav-link {{ $active_route == 'user.index' ? 'active' : '' }}">
+                            <a href="{{ route('user.index') }}" class="nav-link {{ $active_route == 'user.index' || $active_route == 'user.create' || $active_route == 'user.edit' ? 'active' : '' }}">
                                 <i class="far fa-user nav-icon"></i>
                                 <p>User</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../mailbox/compose.html" class="nav-link">
+                            <a href="{{ route('role.index') }}" class="nav-link {{ $active_route == 'role.index' || $active_route == 'role.create' || $active_route == 'role.edit' ? 'active' : '' }}">
                                 <i class="fa fa-user-tag nav-icon"></i>
                                 <p>Role</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../mailbox/read-mail.html" class="nav-link">
+                            <a href="{{ route('permission.index') }}" class="nav-link {{ $active_route == 'permission.index' || $active_route == 'permission.create' || $active_route == 'permission.edit' ? 'active' : '' }}">
                                 <i class="fa fa-list-ul nav-icon"></i>
                                 <p>Permission</p>
                             </a>

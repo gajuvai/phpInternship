@@ -28,10 +28,10 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>User List</h1>
+                        <h1>Permission List</h1>
                     </div>
                     <div class="card-tools ml-auto">
-                        <a href="{{ route('user.create') }}" class="btn btn-primary"><i class="fa fa-plus mr-3"></i>Add User</a>
+                        <a href="{{ route('permission.create') }}" class="btn btn-primary"><i class="fa fa-plus mr-3"></i>Add Permission</a>
                     </div>
                 </div>
             </div>
@@ -52,32 +52,19 @@
                                 <tr>
                                     <th>S.N</th>
                                     <th>Name</th>
-                                    <th>User Name</th>
-                                    <th>Email</th>
-                                    <th>Created Date</th>
-                                    <th>Status</th>
+                                    <th>Description</th>
                                     <th data-orderable="false">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $key=>$user)
+                                @foreach ($permissions as $key=>$permission)
                                     <tr>
                                         <td>{{ $key+1}}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->username }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ Carbon\Carbon::parse($user->created_at)->diffForHumans() }}</td>
+                                        <td>{{ $permission->name }}</td>
+                                        <td>{{ $permission->description}}</td>
                                         <td>
-                                            @if ($user->status == 1)
-                                                <span class="badge badge-success">Active</span>
-                                            @else
-                                                <span class="badge badge-danger">In-active</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary"><i class="fa fa-user-tag"></i></a>
-                                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
-                                            <a href="{{ route('user.delete', $user->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                            <a href="{{ route('permission.edit', $permission->id) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
+                                            <a href="{{ route('permission.delete', $permission->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

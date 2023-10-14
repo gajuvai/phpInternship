@@ -31,7 +31,7 @@
                         <h1>Post List</h1>
                     </div>
                     <div class="card-tools ml-auto">
-                        <a href="{{ route('post.create') }}" class="btn btn-success">Add New Post</a>
+                        <a href="{{ route('post.create') }}" class="btn btn-primary"><i class="fa fa-plus mr-3"></i>Add Post</a>
                     </div>
                 </div>
             </div>
