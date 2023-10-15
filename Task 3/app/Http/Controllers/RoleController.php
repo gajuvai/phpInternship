@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
@@ -12,8 +13,9 @@ class RoleController extends Controller
     public function index()
     {
         $role= Role::latest()->get();
+        $permission = Permission::latest()->get();
 
-        return view('settings.roles.index', ['roles' => $role]);
+        return view('settings.roles.index', ['roles' => $role, 'permissions' => $permission]);
     }
 
     public function create(){

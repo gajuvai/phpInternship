@@ -47,7 +47,7 @@
                     @endif
 
                     <div>
-                        <table border="1" id="myTable" style="border-collapse: collapse">
+                        <table id="myTable" class="table">
                             <thead>
                                 <tr>
                                     <th>S.N</th>
@@ -69,7 +69,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="#" class="btn btn-primary"><i class="fa fa-list"></i></a>
+                                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#permissionModel"><i class="fa fa-list"></i></a>
                                             <a href="{{ route('role.edit', $role->id) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
                                             <a href="{{ route('role.delete', $role->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                         </td>
@@ -82,6 +82,37 @@
             </div>
         </div>
         <!-- /.card-body -->
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="permissionModel" tabindex="-1" role="dialog" aria-labelledby="permissionModel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Assign Permission for Approve from Admin</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @foreach ($permissions as $key => $permission)
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text mr-3">
+                            <input type="checkbox" aria-label="Checkbox for following text input">
+                          </div>
+                        </div>
+                        {{$permission->name}}
+                    </div>
+                    @endforeach
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 

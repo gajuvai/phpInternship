@@ -47,7 +47,7 @@
                     @endif
 
                     <div>
-                        <table border="1" id="myTable" style="border-collapse: collapse">
+                        <table id="myTable" class="table">
                             <thead>
                                 <tr>
                                     <th>Title</th>

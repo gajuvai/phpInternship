@@ -31,7 +31,8 @@
                         <h1>User List</h1>
                     </div>
                     <div class="card-tools ml-auto">
-                        <a href="{{ route('user.create') }}" class="btn btn-primary"><i class="fa fa-plus mr-3"></i>Add User</a>
+                        <a href="{{ route('user.create') }}" class="btn btn-primary"><i class="fa fa-plus mr-3"></i>Add
+                            User</a>
                     </div>
                 </div>
             </div>
@@ -47,7 +48,7 @@
                     @endif
 
                     <div>
-                        <table border="1" id="myTable" style="border-collapse: collapse">
+                        <table id="myTable" class="table">
                             <thead>
                                 <tr>
                                     <th>S.N</th>
@@ -60,9 +61,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $key=>$user)
+                                @foreach ($users as $key => $user)
                                     <tr>
-                                        <td>{{ $key+1}}</td>
+                                        <td>{{ $key + 1 }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->username }}</td>
                                         <td>{{ $user->email }}</td>
@@ -75,9 +76,12 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="#" class="btn btn-primary"><i class="fa fa-user-tag"></i></a>
-                                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
-                                            <a href="{{ route('user.delete', $user->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                            <a href="#" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#roleModel"><i class="fa fa-user-tag"></i></a>
+                                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success"><i
+                                                    class="fa fa-edit"></i></a>
+                                            <a href="{{ route('user.delete', $user->id) }}" class="btn btn-danger"><i
+                                                    class="fas fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -88,6 +92,36 @@
             </div>
         </div>
         <!-- /.card-body -->
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="roleModel" tabindex="-1" role="dialog" aria-labelledby="roleModel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Assign Role to Kupondole User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @foreach ($roles as $key => $role)
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text mr-3">
+                            <input type="checkbox" aria-label="Checkbox for following text input">
+                          </div>
+                        </div>
+                        {{$role->name}}
+                    </div>
+                    @endforeach
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 

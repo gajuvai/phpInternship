@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
@@ -12,8 +13,10 @@ class UserController extends Controller
 {
     public function index()
     {
-        $data = User::all();
-        return view('settings.users.index', ['users' => $data]);
+        $user = User::all();
+        $role = Role::where('status', 1)->get();
+
+        return view('settings.users.index', ['users' => $user, 'roles' => $role]);
     }
 
     public function create(){
