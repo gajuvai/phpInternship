@@ -33,11 +33,11 @@
                                     @csrf
                                     <div class="mb-3">
                                         <label for="name" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="eg. Add Post">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="eg. Add Post" value="{{ old('name') }}">
                                     </div>
                                     <div class="mb-3 pb-5">
                                         <label for="description" class="form-label">Description</label>
-                                        <textarea rows="5" class="form-control" id="description" name="description">Enter description here...</textarea>
+                                        <textarea rows="5" class="form-control" id="description" name="description" placeholder="Description" value="{{ old('description') }}"></textarea>
                                     </div>
 
 

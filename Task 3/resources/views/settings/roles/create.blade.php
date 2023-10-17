@@ -33,7 +33,7 @@
                                     @csrf
                                     <div class="mb-3">
                                         <label for="name" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Manager">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Manager" value="{{ old('name') }}">
                                     </div>
                                     <div class="mb-3 pb-5">
                                         <label for="status" class="form-label">Status</label>
