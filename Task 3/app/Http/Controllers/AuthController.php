@@ -52,11 +52,13 @@ class AuthController extends Controller
         $validated=User::create([
             'name' => $request['name'],
             'email' => $request['email'],
+            'username' => $request['name'],
             'password' => Hash::make($request['password']),
+            'status' => "1"
         ]);
 
         if($validated){
-            return redirect()->route('getLogin')->with('success', 'Register Successful');
+            return redirect()->back()->with('success', 'Register Successful');
         }else{
            return redirect()->back()->with('error', 'Invalid credentials');
         }

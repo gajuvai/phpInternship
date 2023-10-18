@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('post_has_images', function (Blueprint $table) {
-            $table->id();
-            $table->string('caption'); // Corrected column name
+            $table->uuid('id')->primary();
+            $table->string('caption');
             $table->string('image');
-            $table->bigInteger('post_id', false, true);
+            $table->uuid('post_id', false, true);
             $table->timestamps();
         });
 
