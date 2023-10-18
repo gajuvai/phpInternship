@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
@@ -13,10 +13,17 @@ class UserController extends Controller
 {
     public function index()
     {
-        $user = User::all();
-        $role = Role::where('status', 1)->get();
+        $users = User::all();
+        $roles = Role::all();
 
-        return view('settings.users.index', ['users' => $user, 'roles' => $role]);
+        $userRoles = [];
+
+        foreach ($users as $user) {
+            $userRoles[$user->id] = $user->getRoleNames();
+        }
+
+        return view('settings.users.index', compact('users', 'roles', 'userRoles'));
+
     }
 
     public function create(){
@@ -105,5 +112,25 @@ class UserController extends Controller
             $request->session()->flash('msg', 'Error occurred while deleting the user!');
             return redirect()->route('user.index');
         }
+    }
+
+    // public function show(User $user)
+    // {
+    //     $roles = Role::all();
+    //     return view('role-assignment.show', compact('user', 'roles'));
+    // }
+
+    public function assignRoles(Request $request, User $user)
+    {
+        $roles = Role::all();
+        return view('user.assign-roles', compact('user', 'roles'));
+    }
+
+    public function storeRoles(Request $request, User $user)
+    {
+        $roles = $request->input('roles', []);
+        $user->syncRoles($roles);
+
+        return redirect()->route('user.index')->with('success', 'Roles assigned successfully');
     }
 }

@@ -1,19 +1,12 @@
+<!-- resources/views/role/index.blade.php -->
 @extends('layouts.app')
 
-@section('title', __('User Management'))
+@section('title', __('Role Management'))
 
 @section('css')
     <!-- Add DataTables CSS here -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
     <script src="{{ asset('assets/plugins/jquery/jquery.js') }}"></script>
-    <script>
-        // Automatically close the success alert after 5 seconds
-        $(document).ready(function() {
-            setTimeout(function() {
-                $('.alert').alert('close');
-            }, 5000);
-        });
-    </script>
     <style>
         .close {
             font-size: 1rem;
@@ -22,7 +15,6 @@
 @endsection
 
 @section('content')
-
     <div class="card card-default color-palette-box">
         <div class="content-header">
             <div class="container-fluid">
@@ -57,9 +49,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($roles as $key=>$role)
+                                @foreach ($roles as $key => $role)
                                     <tr>
-                                        <td>{{ $key+1}}</td>
+                                        <td>{{ $key + 1 }}</td>
                                         <td>{{ $role->name }}</td>
                                         <td>
                                             @if ($role->status == 1)
@@ -69,7 +61,9 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#permissionModel"><i class="fa fa-list"></i></a>
+                                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#permissionModel{{ $role->id }}">
+                                                <i class="fa fa-list"></i>
+                                            </a>
                                             <a href="{{ route('role.edit', $role->id) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
                                             <a href="{{ route('role.delete', $role->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                         </td>
@@ -81,44 +75,48 @@
                 </div>
             </div>
         </div>
-        <!-- /.card-body -->
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="permissionModel" tabindex="-1" role="dialog" aria-labelledby="permissionModel"
-        aria-hidden="true">
+    @foreach ($roles as $role)
+    <!-- Modal for Assigning Permissions -->
+    <div class="modal fade" id="permissionModel{{ $role->id }}" tabindex="-1" role="dialog" aria-labelledby="permissionModelLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Assign Permission for Approve from Admin</h5>
+                    <h5 class="modal-title">Assign Permissions for {{ $role->name }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    @foreach ($permissions as $key => $permission)
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <div class="input-group-text mr-3">
-                            <input type="checkbox" aria-label="Checkbox for following text input">
-                          </div>
+                    <form method="POST" action="{{ route('role.storePermissions', $role) }}">
+                        @csrf
+                        @foreach ($permissions as $permission)
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text mr-3">
+                                        <input type="checkbox" aria-label="Checkbox for following text input"
+                                            name="permissions[]" value="{{ $permission->name }}"
+                                            {{ in_array($permission->name, $rolePermissions[$role->id]->toArray()) ? 'checked' : '' }}>
+                                    </div>
+                                </div>
+                                {{ $permission->name }}
+                            </div>
+                        @endforeach
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
-                        {{$permission->name}}
-                    </div>
-                    @endforeach
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+    @endforeach
 @endsection
 
 @section('scripts')
     <!-- Add DataTables JavaScript here -->
-
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {

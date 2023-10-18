@@ -6,14 +6,6 @@
     <!-- Add DataTables CSS here -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
     <script src="{{ asset('assets/plugins/jquery/jquery.js') }}"></script>
-    <script>
-        // Automatically close the success alert after 5 seconds
-        $(document).ready(function() {
-            setTimeout(function() {
-                $('.alert').alert('close');
-            }, 5000);
-        });
-    </script>
     <style>
         .close {
             font-size: 1rem;
@@ -22,7 +14,6 @@
 @endsection
 
 @section('content')
-
     <div class="card card-default color-palette-box">
         <div class="content-header">
             <div class="container-fluid">
@@ -77,11 +68,15 @@
                                         </td>
                                         <td>
                                             <a href="#" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#roleModel"><i class="fa fa-user-tag"></i></a>
-                                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success"><i
-                                                    class="fa fa-edit"></i></a>
-                                            <a href="{{ route('user.delete', $user->id) }}" class="btn btn-danger"><i
-                                                    class="fas fa-trash"></i></a>
+                                                data-target="#roleModel{{ $user->id }}">
+                                                <i class="fa fa-user-tag"></i>
+                                            </a>
+                                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a href="{{ route('user.delete', $user->id) }}" class="btn btn-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -91,43 +86,49 @@
                 </div>
             </div>
         </div>
-        <!-- /.card-body -->
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="roleModel" tabindex="-1" role="dialog" aria-labelledby="roleModel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Assign Role to Kupondole User</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    @foreach ($roles as $key => $role)
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <div class="input-group-text mr-3">
-                            <input type="checkbox" aria-label="Checkbox for following text input">
-                          </div>
-                        </div>
-                        {{$role->name}}
+
+    @foreach ($users as $user)
+        <!-- Modal for Assigning Roles -->
+        <div class="modal fade" id="roleModel{{ $user->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="roleModelLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Assign Role to {{ $user->name }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    @endforeach
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Submit</button>
+                    <div class="modal-body">
+                        <form method="POST" action="{{ route('user.storeRoles', $user) }}">
+                            @csrf
+                            @foreach ($roles as $role)
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text mr-3">
+                                            <input type="checkbox" aria-label="Checkbox for following text input"
+                                                name="roles[]" value="{{ $role->name }}"
+                                                {{ in_array($role->name, $userRoles[$user->id]->toArray()) ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                    {{ $role->name }}
+                                </div>
+                            @endforeach
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
+    @endforeach
 @endsection
 
 @section('scripts')
     <!-- Add DataTables JavaScript here -->
-
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
